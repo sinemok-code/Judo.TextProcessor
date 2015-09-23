@@ -18,10 +18,10 @@ namespace Judo.TextProcessor.Lib
         {
             var wordsDictionary = new Dictionary<string, int>();
 
-            var punctuation = text.Where(Char.IsPunctuation).Distinct().ToArray();
-            var words = text.Split().Select(x => x.Trim(punctuation).ToLowerInvariant()).Where(x=> !string.IsNullOrEmpty(x));
-
-            //text = text.RemoveSpecialCharacters();
+            text = text.RemoveSpecialCharacters();
+            
+            var seperator = new string[] { " ", Environment.NewLine };
+            var words = text.ToLowerInvariant().Split(seperator, StringSplitOptions.RemoveEmptyEntries);
             
             foreach (string word in words)
             {
