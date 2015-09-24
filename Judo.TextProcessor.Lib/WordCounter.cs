@@ -1,37 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace Judo.TextProcessor.Lib
 {
     public class WordCounter
     {
-        public Dictionary<string, int> GetWords(string fileLocation)
-        {
-            var text = File.ReadAllText(fileLocation);
+        private readonly WordFilter m_wordFilter;
 
-            return this.GetWordsFromText(text);
+        public WordCounter()
+        {
+            this.m_wordFilter = new WordFilter();
         }
 
-        private Dictionary<string, int> GetWordsFromText(string text)
+        public WordResponse GetWords(string fileLocation)
         {
+            var wordResponse = new WordResponse();
             var wordsDictionary = new Dictionary<string, int>();
 
-            text = text.RemoveSpecialCharacters();
+            var text = File.ReadAllText(fileLocation);
             
+            var words = GetWordList(text);
+            
+            wordResponse.FilteredWords = m_wordFilter.Filter(words);
+            wordResponse.Words = words.ToCountDictionary();
+            
+            return wordResponse;
+        }
+        
+        private string[] GetWordList(string text)
+        {
+            text = text.RemoveSpecialCharacters();
+
             var seperator = new string[] { " ", Environment.NewLine };
             var words = text.ToLowerInvariant().Split(seperator, StringSplitOptions.RemoveEmptyEntries);
-            
-            foreach (string word in words)
-            {
-                if (wordsDictionary.Keys.Contains(word))
-                    wordsDictionary[word]++;
-                else
-                    wordsDictionary.Add(word, 1);
-            }
 
-            return wordsDictionary;
+            return words;
         }
     }
 }

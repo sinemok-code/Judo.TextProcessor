@@ -19,9 +19,9 @@ namespace Judo.TextProcessor.Client
             Console.Read();
         }
 
-        private static void WriteToConsole(Dictionary<string, int> words)
+        private static void WriteToConsole(WordResponse wordResponse)
         {
-            var sortedWords = new SortedDictionary<string, int>(words);
+            var sortedWords = new SortedDictionary<string, int>(wordResponse.Words);
 
             Console.WriteLine("{0,-15}{1,-15}", "Word", "Count");
 
@@ -30,6 +30,10 @@ namespace Judo.TextProcessor.Client
                 var wordText = string.Format("{0}\t\t{1}", word.Key, word.Value);
                 Console.WriteLine("{0,-15}{1,-15}", word.Key, word.Value);
             }
+
+            Console.WriteLine(Environment.NewLine + "Filtered Words");
+            var filteredWordsStr = string.Join(",", wordResponse.FilteredWords);
+            Console.WriteLine(filteredWordsStr);
         }
     }
 }
