@@ -27,7 +27,6 @@ namespace Judo.TextProcessor.Client
 
             foreach (var word in sortedWords)
             {
-                var wordText = string.Format("{0}\t\t{1}", word.Key, word.Value);
                 Console.WriteLine("{0,-15}{1,-15}", word.Key, word.Value);
             }
 
